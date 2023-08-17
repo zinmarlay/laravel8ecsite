@@ -47,17 +47,17 @@ class LoginRequest extends FormRequest
 
         if($this->routeIs('owner.*')){
             $guard = 'owners';
-        }elseif($this->routeIs('admin.*')){
+        } elseif($this->routeIs('admin.*')){
             $guard = 'admin';
-        }else{
+        } else {
             $guard = 'users';
         }
-        
-        if (! Auth::guard()->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+
+        if (! Auth::guard($guard)->attempt($this->only('email', 'password'), $this->filled('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => __('auth.failed'),
             ]);
         }
 
