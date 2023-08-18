@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 
 class OwnersController extends Controller
 {
@@ -19,7 +21,13 @@ class OwnersController extends Controller
 
     public function index()
     {
-        dd("ownwers");
+        $date_now = Carbon::now();
+        $date_parse = Carbon::parse(now());
+        
+        echo $date_now."<br>";
+        echo $date_now->year."<br>";
+        echo $date_parse;
+
     }
 
     /**
