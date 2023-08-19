@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Owner;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -21,12 +22,8 @@ class OwnersController extends Controller
 
     public function index()
     {
-        $date_now = Carbon::now();
-        $date_parse = Carbon::parse(now());
-        
-        echo $date_now."<br>";
-        echo $date_now->year."<br>";
-        echo $date_parse;
+        $owners = Owner::select('name','email','created_at')->get();
+        return view('admin.owners.index', compact('owners'));
 
     }
 
@@ -37,7 +34,7 @@ class OwnersController extends Controller
      */
     public function create()
     {
-        //
+        return view ('admin.owners.create');
     }
 
     /**
