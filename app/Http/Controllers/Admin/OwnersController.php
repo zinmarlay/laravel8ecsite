@@ -102,6 +102,7 @@ class OwnersController extends Controller
         $owner->email = $request->email;
         $owner->password = Hash::make($request->password);
         $owner->save();
+
         return redirect()->route('admin.owners.index')
             ->with('message','オーナー情報を更新しました。');
     }
@@ -114,6 +115,9 @@ class OwnersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Owner::findOrFail($id)->delete();//ソフトデリート
+
+        return redirect()->route('admin.owners.index')
+            ->with('message','オーナー情報を削除しました。');
     }
 }

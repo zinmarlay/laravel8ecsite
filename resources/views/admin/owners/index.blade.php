@@ -12,12 +12,17 @@
                     <section class="text-gray-600 body-font">
                         <div class="container px-5 mx-auto">                             
                           <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                            {{-- <x-flash-message status= "error" />   --}}
-                            @if(session('message'))
+                            {{-- <x-flash-message status= "session('status')" />   --}}
+                            {{-- @if(session('message') && session('status') == 'info')
                                 <div class="bg-blue-300 w-1/2 mx-auto p-2 text-white">
                                 {{ session('message' )}} 
                                 </div>
-                            @endif
+                            @endif --}}
+                            @if(session('message'))
+                              <div class="bg-blue-300 w-1/2 mx-auto p-2">
+                              {{ session('message' )}} 
+                              </div>
+                             @endif
                             <div class="flex justify-end mb-4">
                               <button onclick="location.href=' {{route('admin.owners.create')}} '" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">新規登録する</button>
                             </div>
@@ -28,7 +33,8 @@
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">名前</th>
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">メールアドラス</th>
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">作成日</th>
-                                　  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+                                　<th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+                                  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -40,6 +46,14 @@
                                     <td class="px-4 py-3">
                                       <button type="button" onclick="location.href='{{ route('admin.owners.edit', ['owner' => $owner->id ])}}'" class="text-white bg-yellow-400 border-0 py-2 px-4 focus:outline-none hover:bg-yellow-500 rounded">編集</button>
                                     </td>
+                                    <form id="delete_{{$owner->id}}" method="post" action="{{ route('admin.owners.destroy', ['owner' => $owner->id])}}">
+                                      @csrf
+                                      @method('delete')
+                                      <td class="px-4 py-3">
+                                        <a href ="#" data-id="{{ $owner->id }}" onclick="deletePost(this)"  class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded">削除</a>
+                                      </td>
+                                    </form>
+                                   
                                   </tr>
                                 @endforeach
                                
@@ -61,4 +75,12 @@
             </div>
         </div>
     </div>
+
+<script>
+  function deletePost(e) {
+  'use strict';
+  if (confirm('本当に削除してもいいですか?')) { document.getElementById('delete_' + e.dataset.id).submit(); }
+  } 
+</script>
+
 </x-app-layout>
