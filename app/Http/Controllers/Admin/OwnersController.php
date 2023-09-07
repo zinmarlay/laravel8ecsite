@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Throwable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class OwnersController extends Controller
@@ -54,11 +57,21 @@ class OwnersController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try{
+            DB::transaction(function () use ($request){
+                Owner::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+                
+            });
+        }catch(Throwable $e){
+            Log::error($e);
+            throw $e;
+        }
+
+       
 
         return redirect()
         ->route('admin.owners.index')
