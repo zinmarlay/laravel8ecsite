@@ -69,8 +69,8 @@ class OwnersController extends Controller
                 Shop::create([
                     'owner_id' => $owner->id,
                     'name' => '社名を入力してください',
-                    'information' => '',
-                    'filename' => '',
+                    'information' => 'ここにお店の情報が入ります',
+                    'filename' => 'ここにお店の情報が入ります',
                     'is_selling' => true
                 ]);   
 
